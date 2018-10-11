@@ -16,4 +16,26 @@ class Block{
     calculateHash(){//this hash will helpful to identify block in the blockchain
         return SHA256(this.index+this.previousHash+this.timestamp+JSON.stringify(this.data)).toString();
     }
+
+}
+
+//create blochchain class
+class Blockchain{
+    constructor(){
+        this.chain=[this.createGenesisBlock()];
+    }
+    //first block in the chain called genesisBlock
+    createGenesisBlock(){
+        return new Block(0,"11-10-2018","GenesisBlock",0);//starter block
+    }
+    getLatestBlock(){
+        //for return most recently created block
+        return this.chain[this.chain.length-1];
+    }
+    addBlock(newBlock){
+        //for add new block into the chain
+        newBlock.previousHash=this.getLatestBlock().hash;//get the hash value of previous block
+        newBlock.hash=newBlock.calculateHash();//calculate hash using data and previous block hash value
+        this.chain.push(newBlock);//add hash to the array
+    }
 }
